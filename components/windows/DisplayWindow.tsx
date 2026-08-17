@@ -4,7 +4,20 @@ import Image from "next/image";
 import { useSettings, WallpaperId } from "@/lib/SettingsContext";
 
 export default function DisplayWindow() {
-  const { wallpaper, setWallpaper, showWallpaper, setShowWallpaper, axisCursor, setAxisCursor } = useSettings();
+  const {
+    wallpaper,
+    setWallpaper,
+    showWallpaper,
+    setShowWallpaper,
+    axisCursor,
+    setAxisCursor,
+    pointerColor,
+    setPointerColor,
+    fontSize,
+    setFontSize,
+    iconSize,
+    setIconSize,
+  } = useSettings();
 
   const wallpapers: { id: WallpaperId; name: string; src?: string }[] = [
     { id: "default", name: "(None) / Classic Hills CSS" },
@@ -79,7 +92,7 @@ export default function DisplayWindow() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-2 p-2 border border-white shadow-[inset_1px_1px_1px_rgba(0,0,0,0.1)] rounded bg-black/5">
+          <div className="flex flex-col gap-2.5 p-2.5 border border-white shadow-[inset_1px_1px_1px_rgba(0,0,0,0.1)] rounded bg-black/5">
             <label className="flex items-center gap-2 cursor-pointer font-medium text-[#222] select-none">
               <input
                 type="checkbox"
@@ -99,6 +112,63 @@ export default function DisplayWindow() {
               />
               Enable Axis Cursor (Aim Line Effect)
             </label>
+
+            {/* Pointer Color Selector */}
+            <div className="mt-1">
+              <span className="block font-semibold mb-1 text-[#222]">Pointer Color:</span>
+              <div className="flex gap-2">
+                {[
+                  { name: "Green", value: "green", hex: "#19FA2F" },
+                  { name: "Red", value: "red", hex: "#ff3b30" },
+                  { name: "Blue", value: "blue", hex: "#007aff" },
+                  { name: "Orange", value: "orange", hex: "#ff9500" },
+                  { name: "Purple", value: "purple", hex: "#af52de" },
+                ].map((c) => (
+                  <button
+                    key={c.value}
+                    onClick={() => setPointerColor(c.value)}
+                    className={`w-5.5 h-5.5 rounded-full border transition-all ${
+                      pointerColor === c.value ? "border-black scale-110 ring-1 ring-black/50" : "border-gray-400"
+                    }`}
+                    style={{ backgroundColor: c.hex }}
+                    title={c.name}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Font & Icon Sizes */}
+            <div className="mt-1 border-t border-gray-300 pt-2 flex flex-col gap-2.5">
+              <div>
+                <div className="flex justify-between text-[#222] font-semibold mb-0.5">
+                  <span>Font Size:</span>
+                  <span>{fontSize}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="80"
+                  max="150"
+                  value={fontSize}
+                  onChange={(e) => setFontSize(Number(e.target.value))}
+                  className="w-full accent-[#3a7fd6] cursor-pointer"
+                />
+              </div>
+
+              <div>
+                <div className="flex justify-between text-[#222] font-semibold mb-0.5">
+                  <span>Desktop Icon Size:</span>
+                  <span>{iconSize}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="80"
+                  max="150"
+                  value={iconSize}
+                  onChange={(e) => setIconSize(Number(e.target.value))}
+                  className="w-full accent-[#3a7fd6] cursor-pointer"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

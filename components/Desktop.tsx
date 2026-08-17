@@ -1,6 +1,7 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Icon } from "@/components/icons";
 import { DESKTOP_ICONS, WinId } from "@/lib/windowRegistry";
 import { useSettings } from "@/lib/SettingsContext";
@@ -13,7 +14,8 @@ export default function Desktop({
   isTouch: boolean;
 }) {
   const [selected, setSelected] = useState<WinId | null>(null);
-  const { wallpaper, showWallpaper, axisCursor } = useSettings();
+  const { wallpaper, showWallpaper, axisCursor, iconSize } = useSettings();
+  const desktopRef = useRef<HTMLDivElement>(null);
 
   const handleActivate = (id: WinId) => {
     if (isTouch) {
@@ -23,8 +25,11 @@ export default function Desktop({
     }
   };
 
+  const scale = iconSize / 100;
+
   return (
     <div
+      ref={desktopRef}
       className={`fixed inset-0 overflow-hidden ${
         !showWallpaper || wallpaper === "default" ? "desktop-bg" : "bg-[#0a2f8f]"
       }`}
@@ -43,15 +48,20 @@ export default function Desktop({
       )}
 
       <div
-        className="absolute top-2 left-2 right-2 sm:top-3.5 sm:left-3.5 sm:right-auto grid gap-1 sm:gap-0.5 justify-items-center sm:justify-items-stretch z-10"
+        className="absolute top-2 left-2 right-2 sm:top-3.5 sm:left-3.5 sm:right-auto grid gap-1.5 sm:gap-2 justify-items-center sm:justify-items-stretch z-10"
         style={{
-          gridTemplateColumns: "repeat(auto-fill, minmax(72px, 1fr))",
+          gridTemplateColumns: `repeat(auto-fill, minmax(${76 * scale}px, 1fr))`,
           gridAutoFlow: "row",
           cursor: "default",
+          width: "auto",
         }}
       >
         {DESKTOP_ICONS.map((d) => (
-          <div
+          <motion.div
+            drag
+            dragConstraints={desktopRef}
+            dragMomentum={false}
+            dragElastic={0}
             key={d.id}
             tabIndex={0}
             onClick={(e) => {
@@ -65,25 +75,37 @@ export default function Desktop({
             onDoubleClick={() => {
               if (!isTouch) onOpen(d.id);
             }}
-            className={`w-[72px] sm:w-[82px] h-[80px] sm:h-[88px] flex flex-col items-center gap-1 sm:gap-1.5 p-1 sm:p-1.5 border border-dotted cursor-pointer rounded ${
+            className={`flex flex-col items-center gap-1 p-1 sm:p-1.5 border border-dotted cursor-pointer rounded select-none touch-none ${
               selected === d.id ? "border-[#dfe9fb] bg-[#3264c8]/35" : "border-transparent"
             }`}
+            style={{
+              width: `${82 * scale}px`,
+              height: `${88 * scale}px`,
+            }}
           >
             <div
-              className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center"
-              style={{ filter: "drop-shadow(1px 2px 1px rgba(0,0,0,.5))" }}
+              className="flex items-center justify-center"
+              style={{
+                width: `${40 * scale}px`,
+                height: `${40 * scale}px`,
+                filter: "drop-shadow(1px 2px 1px rgba(0,0,0,.5))",
+              }}
             >
-              <Icon name={d.icon} size={36} />
+              <Icon name={d.icon} size={36 * scale} />
             </div>
             <span
-              className={`text-white text-[10px] sm:text-[11px] text-center leading-tight max-w-[70px] sm:max-w-[80px] ${
+              className={`text-white text-center leading-tight ${
                 selected === d.id ? "bg-[#2f5fbf] px-0.5" : ""
               }`}
-              style={{ textShadow: "1px 1px 2px #000, 0 0 3px #000" }}
+              style={{
+                textShadow: "1px 1px 2px #000, 0 0 3px #000",
+                fontSize: `${11 * scale}px`,
+                maxWidth: `${80 * scale}px`,
+              }}
             >
               {d.label}
             </span>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>

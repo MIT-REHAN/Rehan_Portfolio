@@ -26,6 +26,7 @@ export default function SkillsWindow() {
       <Row title="Cloud & DevOps" items={SKILLS.cloudDevOps} />
       <Row title="Tools" items={SKILLS.tools} />
       <Row title="Currently Exploring" items={SKILLS.exploring} />
+      <Row title="Currently Learning" items={SKILLS.learning} />
       <Row title="Soft Skills" items={SKILLS.soft} />
       <Row title="Languages Spoken" items={SKILLS.spoken} />
     </div>

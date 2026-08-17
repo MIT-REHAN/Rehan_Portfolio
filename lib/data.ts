@@ -55,20 +55,45 @@ export interface WorkEntry {
 
 export const WORK: WorkEntry[] = [
   {
-    date: "Ongoing",
+    date: "June 2026 – Present",
     role: "Technology & Operations Lead",
-    org: "GAPRIO Labs",
+    org: "GAPRIO LABS PRIVATE LIMITED",
     bullets: [
-      "Leading technology and operations, bridging engineering execution with day-to-day product delivery.",
+      "Lead technology and operations by managing cross-functional teams, streamlining workflows, and ensuring efficient execution of business initiatives.",
+      "Drive scalable web development and technology strategy while aligning product execution with company goals and improving operational efficiency.",
+      "Monitor KPIs, optimize processes, and support strategic planning to improve team productivity and long-term business growth.",
+      "Tech Stack: React.js, Next.js, TypeScript, Node.js, Express.js, MongoDB, REST APIs, Git/GitHub, Docker, AWS."
     ],
   },
   {
-    date: "Feb 2023 – Present",
+    date: "May 2026 – July 2026",
+    role: "Backend Engineer",
+    org: "LeapX",
+    bullets: [
+      "Developed backend services and server-side logic using JavaScript, focusing on scalable and reliable application functionality.",
+      "Built and integrated backend features while collaborating with the development team on product requirements.",
+      "Debugged and optimized backend workflows to improve performance and reliability.",
+      "Tech Stack: JavaScript, Node.js, Express.js, Git/GitHub"
+    ],
+  },
+  {
+    date: "May 2026 – June 2026",
+    role: "Web Developer Intern",
+    org: "KP Smart IT Solutions Pvt. Ltd.",
+    bullets: [
+      "Developed responsive web applications and websites, contributing to features, UI improvements, and overall functionality.",
+      "Debugged and tested applications while collaborating remotely with the team to complete assigned tasks efficiently.",
+      "Gained hands-on experience in frontend development, WordPress-based development, and local server environments.",
+      "Tech Stack: JavaScript, React.js, WordPress, XAMPP, Git/GitHub"
+    ],
+  },
+  {
+    date: "Feb 2023 – Sep 2024",
     role: "Chief Technology Officer (CTO)",
     org: "Deaf Link Innovations",
     bullets: [
-      "Engineered a $99 neckband-style wearable device to assist 18 million+ completely deaf individuals worldwide.",
-      "Uses real-time speech-to-vibration conversion to facilitate communication, increasing employability by 1600%.",
+      "Engineered a $99 neckband-style wearable using real-time speech-to-vibration conversion to support 18M+ completely deaf individuals worldwide.",
+      "Developed the technology with a focus on accessible communication and improved employment opportunities."
     ],
   },
   {
@@ -107,12 +132,13 @@ export const HONORS: WorkEntry[] = [
 
 export const SKILLS = {
   languages: ["JavaScript", "Java", "C++", "Python", "Kotlin"],
-  frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS"],
+  frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap"],
   backend: ["Node.js", "Express.js"],
   database: ["MongoDB"],
   cloudDevOps: ["AWS", "Google Cloud", "Docker", "GitHub Actions"],
-  tools: ["Git", "GitHub", "Postman", "Vercel", "Figma"],
+  tools: ["Git", "GitHub", "Postman", "Vercel", "Figma", "Claude", "Stanford Code in Place 2026"],
   exploring: ["DevSecOps", "Cloud Security", "Kubernetes", "Ethical Hacking", "Blockchain"],
+  learning: ["Rust", "Spring Boot", "Solidity", "Python (AI/ML)"],
   soft: ["Analytical Thinking", "Team Management", "Product Design", "Public Speaking & Technical Presentation"],
   spoken: ["English", "Hindi"],
 };

@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { ABOUT_BULLETS } from "@/lib/data";
+import { ABOUT_BULLETS, SOCIALS } from "@/lib/data";
+import { Icon } from "@/components/icons";
 
 export default function AboutWindow() {
   return (
@@ -23,10 +24,24 @@ export default function AboutWindow() {
             <br />
             <b>Phone:</b> +91 8600175623
           </p>
+          <div className="flex gap-2.5 mt-2">
+            {SOCIALS.map((s) => (
+              <a
+                key={s.name}
+                href={s.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={s.name}
+                className="p-1 hover:bg-[#e2ecff] rounded border border-transparent hover:border-[#9fb8e0] transition-colors"
+              >
+                <Icon name={s.icon} size={18} />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="xp-h2">🚀 About Me</div>
+      <div className="xp-h2">🚀 About Rehan</div>
       <ul className="pl-1 list-none">
         {ABOUT_BULLETS.map((b) => (
           <li className="xp-p" key={b}>{b}</li>

@@ -9,6 +9,7 @@ import IEWindow from "@/components/windows/IEWindow";
 import VideoWindow from "@/components/windows/VideoWindow";
 import BinWindow from "@/components/windows/BinWindow";
 import DisplayWindow from "@/components/windows/DisplayWindow";
+import CertificatesWindow from "@/components/windows/CertificatesWindow";
 import { PROJECTS } from "@/lib/data";
 
 export type WinId =
@@ -20,6 +21,7 @@ export type WinId =
   | "contact"
   | "ie"
   | "bin"
+  | "certificates"
   | "display";
 
 export interface WinDef {
@@ -33,7 +35,7 @@ export interface WinDef {
 
 export const WIN_DEFS: Record<WinId, WinDef> = {
   mycomputer: {
-    title: "About Me",
+    title: "About Rehan",
     icon: "mycomputer",
     w: 560,
     h: 440,
@@ -41,7 +43,7 @@ export const WIN_DEFS: Record<WinId, WinDef> = {
     render: () => <AboutWindow />,
   },
   resume: {
-    title: "Resume.doc - Rehan Azim",
+    title: "Rehan_Resume.doc - Rehan Azim",
     icon: "resume",
     w: 600,
     h: 500,
@@ -96,6 +98,14 @@ export const WIN_DEFS: Record<WinId, WinDef> = {
     status: "2 items",
     render: () => <BinWindow />,
   },
+  certificates: {
+    title: "Achievements & Certificates",
+    icon: "certificates",
+    w: 520,
+    h: 420,
+    status: "Honors, hackathons & certifications",
+    render: () => <CertificatesWindow />,
+  },
   display: {
     title: "Display Properties",
     icon: "display",
@@ -107,10 +117,11 @@ export const WIN_DEFS: Record<WinId, WinDef> = {
 };
 
 export const DESKTOP_ICONS: { id: WinId; label: string; icon: IconName }[] = [
-  { id: "mycomputer", label: "About Me", icon: "mycomputer" },
-  { id: "resume", label: "My Resume.doc", icon: "resume" },
+  { id: "mycomputer", label: "About Rehan", icon: "mycomputer" },
+  { id: "resume", label: "Rehan_Resume", icon: "resume" },
   { id: "projects", label: "My Projects", icon: "projects" },
   { id: "skills", label: "Skills & Tools", icon: "skills" },
+  { id: "certificates", label: "Certificates", icon: "certificates" },
   { id: "video", label: "Founder Talk.mp4", icon: "video" },
   { id: "contact", label: "Contact Me", icon: "contact" },
   { id: "ie", label: "Social Links", icon: "ie" },

@@ -20,8 +20,20 @@ export default function PortfolioApp() {
   const [startOpen, setStartOpen] = useState(false);
   const wm = useWindowManager();
   const { isTouch, width: viewportW, height: viewportH } = useViewport();
-  const { axisCursor } = useSettings();
+  const { axisCursor, pointerColor, fontSize } = useSettings();
   const mainRef = useRef<HTMLDivElement>(null);
+
+  const getPointerColorHex = (colorName: string) => {
+    switch (colorName) {
+      case "red": return "#ff3b30";
+      case "blue": return "#007aff";
+      case "orange": return "#ff9500";
+      case "purple": return "#af52de";
+      case "green":
+      default:
+        return "#19FA2F";
+    }
+  };
 
   const handleLogin = useCallback(() => {
     setStage("desktop");
@@ -45,9 +57,12 @@ export default function PortfolioApp() {
 
   return (
     <main ref={mainRef} className="fixed inset-0">
-      {axisCursor && stage === "desktop" && (
-        <style dangerouslySetInnerHTML={{ __html: `* { cursor: none !important; }` }} />
-      )}
+      <style dangerouslySetInnerHTML={{ __html: `
+        :root {
+          --font-scale: ${fontSize / 100};
+        }
+        ${axisCursor && stage === "desktop" ? "* { cursor: none !important; }" : ""}
+      ` }} />
 
       <AnimatePresence>
         {stage === "boot" && <BootScreenTimer key="boot" onDone={() => setStage("login")} />}
@@ -118,7 +133,7 @@ export default function PortfolioApp() {
             }}
           />
 
-          {axisCursor && <CrosshairCursor containerRef={mainRef} />}
+          {axisCursor && <CrosshairCursor containerRef={mainRef} dotColor={getPointerColorHex(pointerColor)} />}
         </>
       )}
     </main>

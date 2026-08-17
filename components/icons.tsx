@@ -12,11 +12,21 @@ export type IconName =
   | "x"
   | "github"
   | "instagram"
+  | "certificates"
   | "display";
 
 export function Icon({ name, size = 16 }: { name: IconName; size?: number }) {
   const s = { width: size, height: size, display: "block" } as const;
   switch (name) {
+    case "certificates":
+      return (
+        <svg viewBox="0 0 48 48" style={s}>
+          <rect x="6" y="8" width="36" height="32" rx="3" fill="#ffefa0" stroke="#c99a1f" strokeWidth="1.5" />
+          <rect x="10" y="12" width="28" height="24" fill="#fff" />
+          <path d="M24 16l3 6.5 7 .5-5.3 4.5 1.6 7-6.3-3.8-6.3 3.8 1.6-7-5.3-4.5 7-.5z" fill="#ffd35c" stroke="#c99a1f" strokeWidth="0.8" />
+          <line x1="12" y1="32" x2="36" y2="32" stroke="#c99a1f" strokeWidth="1.5" />
+        </svg>
+      );
     case "display":
       return (
         <svg viewBox="0 0 48 48" style={s}>

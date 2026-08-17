@@ -5,10 +5,11 @@ import { Icon } from "@/components/icons";
 import { WIN_DEFS, WinId } from "@/lib/windowRegistry";
 
 const LEFT: { id: WinId; label: string; bold?: boolean }[] = [
-  { id: "mycomputer", label: "About Me", bold: true },
-  { id: "resume", label: "My Resume", bold: true },
+  { id: "mycomputer", label: "About Rehan", bold: true },
+  { id: "resume", label: "Rehan_Resume", bold: true },
   { id: "projects", label: "My Projects" },
   { id: "skills", label: "Skills & Tools" },
+  { id: "certificates", label: "Certificates" },
   { id: "video", label: "Founder Talk.mp4" },
 ];
 const RIGHT: { id: WinId; label: string }[] = [
