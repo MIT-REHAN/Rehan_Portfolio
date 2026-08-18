@@ -1,4 +1,4 @@
-import { WORK, HONORS } from "@/lib/data";
+import { WORK, HONORS, CERTIFICATIONS } from "@/lib/data";
 
 export default function ResumeWindow() {
   return (
@@ -56,7 +56,20 @@ export default function ResumeWindow() {
       </div>
 
       <div className="xp-h2">Certifications</div>
-      <p className="xp-p">AI Breast Cancer Predictor — The New York Academy of Sciences</p>
+      {CERTIFICATIONS.map((c) => (
+        <div className="entry" key={c.name}>
+          <span className="date">{c.date}</span>
+          <div className="role">{c.name}</div>
+          <div className="org">{c.org}</div>
+          {c.bullets && (
+            <ul>
+              {c.bullets.map((b) => (
+                <li key={b}>{b}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+      ))}
 
       <div className="mt-4">
         <a

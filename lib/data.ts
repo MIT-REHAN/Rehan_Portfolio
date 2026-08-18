@@ -130,6 +130,63 @@ export const HONORS: WorkEntry[] = [
   },
 ];
 
+export interface CertificationEntry {
+  date: string;
+  name: string;
+  org: string;
+  bullets?: string[];
+}
+
+export const CERTIFICATIONS: CertificationEntry[] = [
+  {
+    date: "2026",
+    name: "Stanford Code in Place 2026",
+    org: "Stanford University (Online)",
+    bullets: ["Completed hands-on Python programming, software design, and final project."]
+  },
+  {
+    date: "Dec 15–19, 2025",
+    name: "Cyber Security Bootcamp",
+    org: "COEP Technological University",
+    bullets: [
+      "5-day hands-on bootcamp covering Ethical Hacking, OSINT, Nmap, Vulnerability Analysis, Web Security (OWASP, SQLi, XSS), and real-world cyber attack case studies.",
+      "Organized by COEP Cybercell in collaboration with MeitY."
+    ]
+  },
+  {
+    date: "Aug 2024",
+    name: "Research Skills",
+    org: "The New York Academy of Sciences",
+    bullets: [
+      "Research Skills",
+      "Issued Aug 2024 · Expired Jan 2025"
+    ]
+  },
+  {
+    date: "2024",
+    name: "AI Breast Cancer Predictor",
+    org: "The New York Academy of Sciences",
+    bullets: ["Developed machine learning predictor models using clinical datasets."]
+  },
+  {
+    date: "Dec 27, 2023",
+    name: "Author & Book Publisher — Notion Press",
+    org: "Notion Press",
+    bullets: [
+      "Certificate of Book Publishing",
+      "Book: Master of Web Development"
+    ]
+  },
+  {
+    date: "June 7, 2022",
+    name: "Breast Cancer Prediction Model",
+    org: "OpenWeaver",
+    bullets: [
+      "Developed an SVM-based machine learning model to predict breast cancer."
+    ]
+  }
+];
+
 export const SKILLS = {
   languages: ["JavaScript", "Java", "C++", "Python", "Kotlin"],
   frontend: ["React.js", "HTML5", "CSS3", "Tailwind CSS", "Bootstrap"],
@@ -137,8 +194,8 @@ export const SKILLS = {
   database: ["MongoDB"],
   cloudDevOps: ["AWS", "Google Cloud", "Docker", "GitHub Actions"],
   tools: ["Git", "GitHub", "Postman", "Vercel", "Figma", "Claude", "Stanford Code in Place 2026"],
-  exploring: ["DevSecOps", "Cloud Security", "Kubernetes", "Ethical Hacking", "Blockchain"],
-  learning: ["Rust", "Spring Boot", "Solidity", "Python (AI/ML)"],
+  exploring: ["DevSecOps", "Cloud Security", "Kubernetes", "Ethical Hacking", "Blockchain", "Computer Organization & Architecture (COA)"],
+  learning: ["Rust", "Spring Boot", "Solidity", "Python (AI/ML)", "Advanced Computer Networking", "Operating Systems"],
   soft: ["Analytical Thinking", "Team Management", "Product Design", "Public Speaking & Technical Presentation"],
   spoken: ["English", "Hindi"],
 };
