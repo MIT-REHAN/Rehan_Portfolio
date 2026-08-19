@@ -48,10 +48,9 @@ export default function Desktop({
       )}
 
       <div
-        className="absolute top-2 left-2 right-2 sm:top-3.5 sm:left-3.5 sm:right-auto grid gap-1.5 sm:gap-2 justify-items-center sm:justify-items-stretch z-10"
+        className="absolute top-2 left-2 sm:top-3.5 sm:left-3.5 z-10 flex flex-col flex-wrap content-start gap-1.5 sm:gap-2"
         style={{
-          gridTemplateColumns: `repeat(auto-fill, minmax(${76 * scale}px, 1fr))`,
-          gridAutoFlow: "row",
+          height: isTouch ? "calc(100% - 56px)" : "calc(100% - 42px)",
           cursor: "default",
           width: "auto",
         }}

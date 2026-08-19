@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, type CSSProperties, type RefObject } from "react";
 
 interface CrosshairCursorProps {
   verticalColor?: string;
@@ -22,58 +21,6 @@ interface CrosshairCursorProps {
   labelRadius?: number;
   containerRef: RefObject<HTMLDivElement | null>;
 }
-
-const useMousePosition = (containerRef: RefObject<HTMLDivElement | null>) => {
-  const [mousePosition, setMousePosition] = useState<{
-    x: number | null;
-    y: number | null;
-  }>({ x: null, y: null });
-  const [isInside, setIsInside] = useState(false);
-
-  useEffect(() => {
-    const updatePosition = (clientX: number, clientY: number) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const relativeX = clientX - rect.left;
-        const relativeY = clientY - rect.top;
-        const mouseInside =
-          relativeX >= 0 &&
-          relativeX <= rect.width &&
-          relativeY >= 0 &&
-          relativeY <= rect.height;
-        setMousePosition({ x: relativeX, y: relativeY });
-        setIsInside(mouseInside);
-      }
-    };
-    const handleMouseMove = (ev: MouseEvent) => {
-      updatePosition(ev.clientX, ev.clientY);
-    };
-    const handleTouchMove = (ev: TouchEvent) => {
-      if (!ev.touches.length) return;
-      const touch = ev.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-    };
-    const handleMouseEnter = () => setIsInside(true);
-    const handleMouseLeave = () => setIsInside(false);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mouseenter", handleMouseEnter);
-      container.addEventListener("mouseleave", handleMouseLeave);
-    }
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-      if (container) {
-        container.removeEventListener("mouseenter", handleMouseEnter);
-        container.removeEventListener("mouseleave", handleMouseLeave);
-      }
-    };
-  }, [containerRef]);
-
-  return { mousePosition, isInside };
-};
 
 export default function CrosshairCursor({
   verticalColor = "rgba(255, 255, 255, 0.4)",
@@ -101,77 +48,142 @@ export default function CrosshairCursor({
   labelRadius = 2,
   containerRef,
 }: CrosshairCursorProps) {
-  const { mousePosition, isInside } = useMousePosition(containerRef);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const labelRef = useRef<HTMLDivElement>(null);
 
-  const crosshairPosition = { x: mousePosition.x || 0, y: mousePosition.y || 0 };
-  const hasValidMousePosition = mousePosition.x !== null && mousePosition.y !== null;
-  const isVisible = hasValidMousePosition && isInside;
+  useEffect(() => {
+    const cursorEl = cursorRef.current;
+    const container = containerRef.current;
+    if (!cursorEl || !container) return;
+
+    let isInside = false;
+
+    const updatePosition = (clientX: number, clientY: number) => {
+      const rect = container.getBoundingClientRect();
+      const relativeX = clientX - rect.left;
+      const relativeY = clientY - rect.top;
+
+      const inside =
+        relativeX >= 0 &&
+        relativeX <= rect.width &&
+        relativeY >= 0 &&
+        relativeY <= rect.height;
+
+      if (inside !== isInside) {
+        isInside = inside;
+        cursorEl.style.setProperty("--cursor-visible", inside ? "1" : "0");
+      }
+
+      cursorEl.style.setProperty("--cursor-x", `${relativeX}px`);
+      cursorEl.style.setProperty("--cursor-y", `${relativeY}px`);
+
+      if (showPosition && labelRef.current) {
+        if (labelMode === "custom") {
+          labelRef.current.textContent = labelText;
+        } else {
+          labelRef.current.textContent = `X: ${Math.round(relativeX)}  Y: ${Math.round(relativeY)}`;
+        }
+      }
+    };
+
+    const handleMouseMove = (ev: MouseEvent) => {
+      updatePosition(ev.clientX, ev.clientY);
+    };
+
+    const handleTouchMove = (ev: TouchEvent) => {
+      if (!ev.touches.length) return;
+      const touch = ev.touches[0];
+      updatePosition(touch.clientX, touch.clientY);
+    };
+
+    const handleMouseEnter = () => {
+      isInside = true;
+      cursorEl.style.setProperty("--cursor-visible", "1");
+    };
+
+    const handleMouseLeave = () => {
+      isInside = false;
+      cursorEl.style.setProperty("--cursor-visible", "0");
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    container.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+    container.addEventListener("mouseleave", handleMouseLeave, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+      container.removeEventListener("mouseenter", handleMouseEnter);
+      container.removeEventListener("mouseleave", handleMouseLeave);
+    };
+  }, [containerRef, labelMode, labelText, showPosition]);
 
   return (
     <div
+      ref={cursorRef}
       style={{
         position: "absolute",
         inset: 0,
         overflow: "hidden",
         zIndex: 2147483647,
         pointerEvents: "none",
+        opacity: "var(--cursor-visible, 0)",
+        transition: "opacity 0.1s ease-in-out",
+        /* Pre-initialize values so no layouts are broken before first mousemove */
+        ["--cursor-x" as any]: "0px",
+        ["--cursor-y" as any]: "0px",
+        ["--cursor-visible" as any]: "0",
       }}
     >
-      <motion.div
+      {/* Vertical line */}
+      <div
         style={{
-          left: `${crosshairPosition.x}px`,
+          transform: "translate3d(var(--cursor-x), 0px, 0px) translateX(-50%)",
           position: "absolute",
           top: 0,
           height: "100%",
           width: verticalThickness,
-          transform: "translateX(-50%)",
           pointerEvents: "none",
           backgroundColor: verticalColor,
+          willChange: "transform",
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isVisible ? 1 : 0 }}
-        transition={{ duration: 0.1, ease: "easeInOut" }}
       />
-      <motion.div
+      {/* Horizontal line */}
+      <div
         style={{
-          top: `${crosshairPosition.y}px`,
+          transform: "translate3d(0px, var(--cursor-y), 0px) translateY(-50%)",
           position: "absolute",
           left: 0,
           width: "100%",
           height: horizontalThickness,
-          transform: "translateY(-50%)",
           pointerEvents: "none",
           backgroundColor: horizontalColor,
+          willChange: "transform",
         }}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isVisible ? 1 : 0 }}
-        transition={{ duration: 0.1, ease: "easeInOut" }}
       />
-      {dotDisabled ? null : (
-        <motion.div
+      {/* Center dot */}
+      {!dotDisabled && (
+        <div
           style={{
-            top: `${crosshairPosition.y}px`,
-            left: `${crosshairPosition.x}px`,
+            transform: "translate3d(var(--cursor-x), var(--cursor-y), 0px) translate(-50%, -50%)",
             position: "absolute",
             width: dotSize,
             height: dotSize,
             borderRadius: "100%",
             backgroundColor: dotColor,
-            transform: "translate(-50%, -50%)",
             pointerEvents: "none",
+            willChange: "transform",
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isVisible ? 1 : 0 }}
-          transition={{ duration: 0.1, ease: "easeInOut" }}
         />
       )}
+      {/* Text coordinates label */}
       {showPosition && (
-        <motion.div
+        <div
+          ref={labelRef}
           style={{
-            top: `${crosshairPosition.y}px`,
-            left: `${crosshairPosition.x}px`,
+            transform: "translate3d(var(--cursor-x), var(--cursor-y), 0px) translate(12px, 12px)",
             position: "absolute",
-            transform: "translate(12px, 12px)",
             pointerEvents: "none",
             lineHeight: 1,
             ...labelFont,
@@ -182,15 +194,9 @@ export default function CrosshairCursor({
             whiteSpace: "nowrap",
             border: "1px solid #1958d6",
             boxShadow: "1px 1px 3px rgba(0,0,0,0.2)",
+            willChange: "transform",
           }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isVisible ? 1 : 0 }}
-          transition={{ duration: 0.1, ease: "easeInOut" }}
-        >
-          {labelMode === "custom"
-            ? labelText
-            : `X: ${Math.round(crosshairPosition.x)}  Y: ${Math.round(crosshairPosition.y)}`}
-        </motion.div>
+        />
       )}
     </div>
   );

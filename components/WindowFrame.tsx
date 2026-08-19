@@ -75,7 +75,7 @@ export default function WindowFrame({
   const fullScreen = state.maximized || isTouch;
 
   const style = fullScreen
-    ? { left: 0, top: 0, width: "100vw", height: "calc(100dvh - 32px)", borderRadius: 0 }
+    ? { left: 0, top: 0, width: "100vw", height: isTouch ? "calc(100dvh - 44px)" : "calc(100dvh - 32px)", borderRadius: 0 }
     : { left: Math.min(state.x, Math.max(0, viewportW - w)), top: Math.min(state.y, Math.max(0, viewportH - 32 - h)), width: w, height: h };
 
   return (
